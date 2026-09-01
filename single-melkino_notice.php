@@ -1,0 +1,3 @@
+<?php if (!defined('ABSPATH')) exit; get_header(); while(have_posts()): the_post(); $important=melkino_notice_meta(get_the_ID(),'important')==='1'; $label=melkino_notice_meta(get_the_ID(),'label','اطلاعیه'); ?>
+<main class="melkino-stage3-page"><div class="container melkino-stage3-single"><div class="melkino-stage3-thumb"><?php if(has_post_thumbnail()) the_post_thumbnail('full'); ?></div><div class="melkino-stage3-content"><div class="melkino-stage3-meta"><span class="melkino-stage3-badge"><?php echo esc_html($important?'اطلاعیه مهم':$label); ?></span><span><?php echo esc_html(get_the_date('j F Y')); ?></span></div><h1><?php the_title(); ?></h1><article><?php the_content(); ?></article></div></div></main>
+<?php endwhile; get_footer(); ?>
