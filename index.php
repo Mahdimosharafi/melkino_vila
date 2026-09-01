@@ -1,6 +1,22 @@
 <?php
 /**
  * Melkino Vila - WordPress theme fallback template.
- * The current homepage is kept in index.html while we progressively convert it to dynamic WordPress templates.
+ *
+ * The homepage HTML is kept in index.html for now, but its asset paths are
+ * rewritten to the active theme directory so CSS/JS work correctly in WordPress.
  */
-include get_template_directory() . '/index.html';
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+$html = file_get_contents(get_template_directory() . '/index.html');
+$theme_uri = get_template_directory_uri();
+
+$html = str_replace(
+    array('href="styles.css"', 'src="script.js"'),
+    array('href="' . esc_url($theme_uri . '/styles.css') . '"', 'src="' . esc_url($theme_uri . '/script.js') . '"'),
+    $html
+);
+
+echo $html;
