@@ -1,0 +1,3 @@
+<?php if (!defined('ABSPATH')) exit; get_header(); while(have_posts()): the_post(); ?>
+<main class="melkino-stage3-page"><div class="container melkino-stage3-single"><div class="melkino-stage3-thumb"><?php if(has_post_thumbnail()) the_post_thumbnail('full'); ?></div><div class="melkino-stage3-content"><div class="melkino-stage3-meta"><span><?php echo esc_html(get_the_date('j F Y')); ?></span><span>•</span><span><?php echo esc_html(melkino_article_meta(get_the_ID(),'reading_time','۵ دقیقه')); ?> مطالعه</span></div><h1><?php the_title(); ?></h1><?php if(has_excerpt()): ?><p class="lead"><?php echo esc_html(get_the_excerpt()); ?></p><?php endif; ?><article><?php the_content(); ?></article></div></div></main>
+<?php endwhile; get_footer(); ?>
