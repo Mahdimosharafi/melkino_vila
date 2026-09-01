@@ -52,5 +52,16 @@ function melkino_save_property_meta($post_id){
 add_action('save_post_property','melkino_save_property_meta');
 function melkino_property_flush_rewrite(){melkino_register_property_content();melkino_register_stage_two_content();flush_rewrite_rules();}
 add_action('after_switch_theme','melkino_property_flush_rewrite');
+
+function melkino_stage_two_rewrite_refresh(){
+    if (get_option('melkino_stage_two_rewrite_version') !== '2') {
+        melkino_register_property_content();
+        melkino_register_stage_two_content();
+        flush_rewrite_rules(false);
+        update_option('melkino_stage_two_rewrite_version','2');
+    }
+}
+add_action('init','melkino_stage_two_rewrite_refresh',99);
+
 function melkino_property_meta($id,$key,$default=''){ $v=get_post_meta($id,'_melkino_'.$key,true);return $v!==''?$v:$default; }
 function melkino_price($value){if(!$value)return 'تماس بگیرید';return number_format_i18n((float)preg_replace('/[^0-9.]/','',$value)).' تومان';}
