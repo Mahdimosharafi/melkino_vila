@@ -1,9 +1,6 @@
 <?php
 /**
- * Melkino Vila theme fallback template.
+ * Melkino Vila - WordPress theme fallback template.
+ * The current homepage is kept in index.html while we progressively convert it to dynamic WordPress templates.
  */
-get_header();
-if (file_exists(get_template_directory() . '/index.html')) {
-    include get_template_directory() . '/index.html';
-}
-get_footer();
+include get_template_directory() . '/index.html';
