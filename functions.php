@@ -2,6 +2,8 @@
 /** Melkino Vila WordPress theme functions. */
 if (!defined('ABSPATH')) exit;
 require_once get_template_directory() . '/stage-two.php';
+require_once get_template_directory() . '/stage-three.php';
+require_once get_template_directory() . '/stage-four.php';
 
 function melkino_vila_setup() {
     add_theme_support('title-tag');
@@ -38,7 +40,7 @@ function melkino_property_meta_boxes(){add_meta_box('melkino_property_details','
 add_action('add_meta_boxes','melkino_property_meta_boxes');
 function melkino_property_details_box($post){
     wp_nonce_field('melkino_save_property','melkino_property_nonce');
-    $fields=array('price'=>'قیمت (تومان)','area_size'=>'متراژ (متر)','bedrooms'=>'تعداد خواب','bathrooms'=>'تعداد سرویس','deal_type'=>'نوع معامله','address'=>'آدرس کوتاه','phone'=>'شماره تماس');
+    $fields=array('price'=>'قیمت (تومان)','area_size'=>'متراژ (متر)','bedrooms'=>'تعداد خواب','bathrooms'=>'تعداد سرویس','deal_type'=>'نوع معامله','address'=>'آدرس کوتاه','phone'=>'شماره تماس','year_built'=>'سال ساخت');
     echo '<div class="melkino-admin-fields">';
     foreach($fields as $key=>$label){$value=get_post_meta($post->ID,'_melkino_'.$key,true);echo '<p><label><strong>'.esc_html($label).'</strong><input type="text" name="melkino_'.esc_attr($key).'" value="'.esc_attr($value).'" class="widefat"></label></p>';}
     $featured=get_post_meta($post->ID,'_melkino_featured',true); echo '<p><label><input type="checkbox" name="melkino_featured" value="1" '.checked($featured,'1',false).'> ملک ویژه</label></p></div>';
@@ -46,22 +48,17 @@ function melkino_property_details_box($post){
 function melkino_save_property_meta($post_id){
     if(!isset($_POST['melkino_property_nonce'])||!wp_verify_nonce($_POST['melkino_property_nonce'],'melkino_save_property'))return;
     if(defined('DOING_AUTOSAVE')&&DOING_AUTOSAVE)return; if(!current_user_can('edit_post',$post_id)||get_post_type($post_id)!=='property')return;
-    foreach(array('price','area_size','bedrooms','bathrooms','deal_type','address','phone') as $key) if(isset($_POST['melkino_'.$key])) update_post_meta($post_id,'_melkino_'.$key,sanitize_text_field(wp_unslash($_POST['melkino_'.$key])));
+    foreach(array('price','area_size','bedrooms','bathrooms','deal_type','address','phone','year_built') as $key) if(isset($_POST['melkino_'.$key])) update_post_meta($post_id,'_melkino_'.$key,sanitize_text_field(wp_unslash($_POST['melkino_'.$key])));
     update_post_meta($post_id,'_melkino_featured',isset($_POST['melkino_featured'])?'1':'0');
 }
 add_action('save_post_property','melkino_save_property_meta');
 function melkino_property_flush_rewrite(){melkino_register_property_content();melkino_register_stage_two_content();flush_rewrite_rules();}
 add_action('after_switch_theme','melkino_property_flush_rewrite');
-
 function melkino_stage_two_rewrite_refresh(){
     if (get_option('melkino_stage_two_rewrite_version') !== '2') {
-        melkino_register_property_content();
-        melkino_register_stage_two_content();
-        flush_rewrite_rules(false);
-        update_option('melkino_stage_two_rewrite_version','2');
+        melkino_register_property_content(); melkino_register_stage_two_content(); flush_rewrite_rules(false); update_option('melkino_stage_two_rewrite_version','2');
     }
 }
 add_action('init','melkino_stage_two_rewrite_refresh',99);
-
 function melkino_property_meta($id,$key,$default=''){ $v=get_post_meta($id,'_melkino_'.$key,true);return $v!==''?$v:$default; }
 function melkino_price($value){if(!$value)return 'تماس بگیرید';return number_format_i18n((float)preg_replace('/[^0-9.]/','',$value)).' تومان';}
