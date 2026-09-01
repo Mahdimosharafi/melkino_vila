@@ -1,0 +1,9 @@
+<?php if (!defined('ABSPATH')) exit; get_header(); ?>
+<main class="melkino-stage3-page"><div class="container">
+<section class="melkino-stage3-hero"><span>مجله ملکینو</span><h1>مقالات و راهنمای املاک</h1><p>راهنماهای کاربردی خرید، فروش، رهن و اجاره ملک در رامسر و اطراف.</p></section>
+<div class="melkino-stage3-toolbar"><form class="melkino-stage3-search" method="get" action="<?php echo esc_url(get_post_type_archive_link('melkino_article')); ?>"><input type="search" name="s" value="<?php echo esc_attr(get_search_query()); ?>" placeholder="جستجو در مقالات..." aria-label="جستجو در مقالات"><button type="submit">جستجو</button></form></div>
+<?php if(have_posts()): ?><div class="melkino-stage3-grid">
+<?php while(have_posts()): the_post(); $featured=melkino_article_meta(get_the_ID(),'featured')==='1'; ?>
+<article class="melkino-stage3-card"><a href="<?php the_permalink(); ?>"><div class="melkino-stage3-thumb"><?php if(has_post_thumbnail()) the_post_thumbnail('large'); ?></div></a><div class="melkino-stage3-body"><div class="melkino-stage3-meta"><?php if($featured): ?><span class="melkino-stage3-badge">ویژه</span><?php endif; ?><span><?php echo esc_html(get_the_date('j F Y')); ?></span><span>•</span><span><?php echo esc_html(melkino_article_meta(get_the_ID(),'reading_time','۵ دقیقه')); ?></span></div><h2><?php the_title(); ?></h2><p><?php echo esc_html(wp_trim_words(get_the_excerpt() ?: get_the_content(),24,'...')); ?></p><a class="melkino-stage3-link" href="<?php the_permalink(); ?>">ادامه مطلب ←</a></div></article>
+<?php endwhile; ?></div><div class="melkino-stage3-pagination"><?php echo paginate_links(array('type'=>'plain','prev_text'=>'→','next_text'=>'←')); ?></div><?php else: ?><div class="melkino-stage3-empty"><h2>هنوز مقاله‌ای منتشر نشده</h2><p>از پیشخوان وردپرس اولین مقاله را اضافه کنید.</p></div><?php endif; ?>
+</div></main><?php get_footer(); ?>
