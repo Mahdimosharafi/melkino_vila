@@ -16,10 +16,7 @@ add_action('init','melkino_register_stage_two_content');
 
 function melkino_stage_two_assets(){
     $v=wp_get_theme()->get('Version');
-    if(is_post_type_archive('agent')||is_singular('agent')||is_post_type_archive('melkino_area')||is_singular('melkino_area')) {
-        wp_enqueue_style('melkino-stage-two-header',get_template_directory_uri().'/stage-two-header.css',array(),$v);
-        wp_enqueue_style('melkino-stage-two',get_template_directory_uri().'/stage-two.css',array('melkino-stage-two-header'),$v);
-    }
+    if(is_post_type_archive('agent')||is_singular('agent')||is_post_type_archive('melkino_area')||is_singular('melkino_area')) wp_enqueue_style('melkino-stage-two',get_template_directory_uri().'/stage-two.css',array('melkino-style'),$v);
 }
 add_action('wp_enqueue_scripts','melkino_stage_two_assets',20);
 
@@ -57,3 +54,6 @@ add_action('save_post_melkino_area','melkino_save_area_meta');
 
 function melkino_agent_meta($id,$key,$default=''){ $v=get_post_meta($id,'_melkino_agent_'.$key,true);return $v!==''?$v:$default; }
 function melkino_area_meta($id,$key,$default=''){ $v=get_post_meta($id,'_melkino_area_'.$key,true);return $v!==''?$v:$default; }
+
+// Stage 3 is loaded after the Stage 2 content layer so articles/notices are available site-wide.
+require_once get_template_directory() . '/stage-three.php';
