@@ -1,0 +1,9 @@
+<?php if(!defined('ABSPATH'))exit; get_header(); ?>
+<main class="stage-wrap">
+<section class="stage-hero"><p class="stage-kicker">تیم متخصص ملکینو</p><h1>مشاوران املاک رامسر</h1><p>مشاور حرفه‌ای مورد اعتماد خود را پیدا کنید و برای خرید، فروش، رهن یا اجاره با او در ارتباط باشید.</p></section>
+<div class="stage-toolbar"><form class="stage-search" method="get"><input type="search" name="s" value="<?php echo esc_attr(get_search_query()); ?>" placeholder="جستجوی نام مشاور..."><button class="stage-btn" type="submit">جستجو</button></form></div>
+<?php if(have_posts()): ?><div class="stage-grid">
+<?php while(have_posts()):the_post(); $phone=melkino_agent_meta(get_the_ID(),'phone');$rating=melkino_agent_meta(get_the_ID(),'rating','5');$reviews=melkino_agent_meta(get_the_ID(),'reviews','0');$specialty=melkino_agent_meta(get_the_ID(),'specialty','مشاور املاک'); ?>
+<article class="stage-card agent-card"><a class="stage-link" href="<?php the_permalink(); ?>"><div class="stage-image"></div><div class="stage-body"><?php if(has_post_thumbnail())the_post_thumbnail('medium',array('class'=>'stage-avatar')); ?><h2><?php the_title(); ?></h2><p><?php echo esc_html($specialty); ?></p><div class="stage-meta"><span class="agent-rating">★ <?php echo esc_html($rating); ?></span><span><?php echo esc_html($reviews); ?> نظر</span></div></div></a><div class="agent-contact"><?php if($phone): ?><a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/','',$phone)); ?>">تماس</a><?php endif; ?><a href="<?php the_permalink(); ?>">پروفایل</a></div></article>
+<?php endwhile; ?></div><div class="stage-pagination"><?php echo wp_kses_post(paginate_links(array('type'=>'plain'))); ?></div><?php else: ?><div class="stage-empty"><h2>هنوز مشاوری ثبت نشده</h2><p>از پیشخوان وردپرس اولین مشاور ملکینو را اضافه کنید.</p></div><?php endif; ?>
+</main><?php get_footer(); ?>
