@@ -32,13 +32,10 @@ if(searchSubmit){
   });
 }
 
-/* جستجوی پیشرفته فعلاً غیرفعال است */
+/* جستجوی پیشرفته به‌طور کامل از رابط کاربری حذف شده است */
 const advancedBtn=document.getElementById('advancedBtn');
 if(advancedBtn){
-  advancedBtn.disabled=true;
-  advancedBtn.setAttribute('aria-disabled','true');
-  advancedBtn.setAttribute('title','به‌زودی فعال می‌شود');
-  advancedBtn.addEventListener('click',e=>e.preventDefault());
+  advancedBtn.remove();
 }
 
 /* بازگشت به بالا */
@@ -149,13 +146,6 @@ style.textContent=`
     background:#55c862;
     box-shadow:0 8px 22px rgba(97,201,107,.28);
     transform:translateY(-2px);
-  }
-
-  /* جستجوی پیشرفته فعلاً خاموش */
-  .advanced:disabled{
-    opacity:.45;
-    cursor:not-allowed;
-    pointer-events:none;
   }
 
   /* آیکون‌های اختصاصی دسته‌بندی‌ها */
