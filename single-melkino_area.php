@@ -1,0 +1,7 @@
+<?php if(!defined('ABSPATH'))exit; get_header(); ?>
+<main class="stage-wrap">
+<?php while(have_posts()):the_post(); $count=melkino_area_meta(get_the_ID(),'count','0');$subtitle=melkino_area_meta(get_the_ID(),'subtitle','منطقه محبوب رامسر'); ?>
+<div class="stage-breadcrumb"><a href="<?php echo esc_url(get_post_type_archive_link('melkino_area')); ?>">مناطق</a> / <?php the_title(); ?></div>
+<section class="stage-hero"><p class="stage-kicker">منطقه منتخب</p><h1><?php the_title(); ?></h1><p><?php echo esc_html($subtitle); ?></p></section>
+<section class="stage-detail"><div class="stage-detail-panel"><div class="stage-detail-image"><?php if(has_post_thumbnail())the_post_thumbnail('large'); ?></div></div><div class="stage-detail-panel"><h2>درباره <?php the_title(); ?></h2><div class="stage-content"><?php the_content(); ?></div><div class="stage-stat-grid"><div class="stage-stat"><span>فایل‌های ثبت‌شده</span><strong><?php echo esc_html($count); ?> ملک</strong></div><div class="stage-stat"><span>مناسب برای</span><strong>خرید و سرمایه‌گذاری</strong></div></div><a class="stage-btn" style="display:inline-block;text-decoration:none" href="<?php echo esc_url(get_post_type_archive_link('property')); ?>">مشاهده املاک این منطقه</a></div></section>
+<?php endwhile; ?><a class="stage-back" href="<?php echo esc_url(get_post_type_archive_link('melkino_area')); ?>">← بازگشت به مناطق</a></main><?php get_footer(); ?>
