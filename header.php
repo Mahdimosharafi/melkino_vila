@@ -4,9 +4,13 @@ $home_url = home_url('/');
 $properties_url = get_post_type_archive_link('property') ?: home_url('/properties/');
 $areas_url = get_post_type_archive_link('melkino_area') ?: home_url('/areas/');
 $agents_url = get_post_type_archive_link('agent') ?: home_url('/agents/');
+$articles_url = get_post_type_archive_link('melkino_article') ?: home_url('/articles/');
+$notices_url = get_post_type_archive_link('melkino_notice') ?: home_url('/notices/');
 $is_properties = is_post_type_archive('property') || is_singular('property');
 $is_areas = is_post_type_archive('melkino_area') || is_singular('melkino_area');
 $is_agents = is_post_type_archive('agent') || is_singular('agent');
+$is_articles = is_post_type_archive('melkino_article') || is_singular('melkino_article');
+$is_notices = is_post_type_archive('melkino_notice') || is_singular('melkino_notice');
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -19,14 +23,13 @@ $is_agents = is_post_type_archive('agent') || is_singular('agent');
 <?php wp_body_open(); ?>
 <header class="property-site-nav">
   <div class="container property-nav-inner">
-    <a class="property-brand" href="<?php echo esc_url($home_url); ?>">
-      <strong>ملکینو</strong>
-      <span>پلتفرم هوشمند املاک رامسر</span>
-    </a>
+    <a class="property-brand" href="<?php echo esc_url($home_url); ?>"><strong>ملکینو</strong><span>پلتفرم هوشمند املاک رامسر</span></a>
     <nav aria-label="منوی اصلی">
       <a class="<?php echo $is_properties ? 'active' : ''; ?>" href="<?php echo esc_url($properties_url); ?>">املاک</a>
       <a class="<?php echo $is_areas ? 'active' : ''; ?>" href="<?php echo esc_url($areas_url); ?>">مناطق</a>
       <a class="<?php echo $is_agents ? 'active' : ''; ?>" href="<?php echo esc_url($agents_url); ?>">مشاوران</a>
+      <a class="<?php echo $is_articles ? 'active' : ''; ?>" href="<?php echo esc_url($articles_url); ?>">مقالات</a>
+      <a class="<?php echo $is_notices ? 'active' : ''; ?>" href="<?php echo esc_url($notices_url); ?>">اطلاعیه‌ها</a>
       <a href="<?php echo esc_url($home_url); ?>">صفحه اصلی</a>
     </nav>
     <a class="property-nav-btn" href="<?php echo esc_url($home_url . '#sell'); ?>">ثبت ملک <b>+</b></a>
