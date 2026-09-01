@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#58c66d" />
+  <meta name="description" content="ملکینو؛ پلتفرم هوشمند خرید، فروش، رهن و اجاره ملک در رامسر و مازندران." />
+  <title>ملکینو | خرید و فروش ملک در رامسر</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="top-glow"></div>
+
+  <header class="hero" id="home">
+    <nav class="nav container" aria-label="ناوبری اصلی">
+      <a class="brand" href="#home" aria-label="ملکینو">
+        <span class="brand-mark" aria-hidden="true"><span></span><i></i></span>
+        <span class="brand-copy"><strong>ملکینو</strong><small>پلتفرم هوشمند املاک رامسر</small></span>
+      </a>
+
+      <div class="nav-links">
+        <a class="active" href="#home">صفحه اصلی</a>
+        <a href="#properties">املاک</a>
+        <a href="#areas">مناطق</a>
+        <a href="#consultants">مشاوران</a>
+        <a href="#articles">مقالات</a>
+        <a href="#about">درباره ما</a>
+        <a href="#contact">تماس با ما</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="login-btn" href="#login"><span>ورود / ثبت‌نام</span><svg viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0M12 13a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"/></svg></a>
+        <a class="sell-btn" href="#sell">ثبت ملک <b>+</b></a>
+      </div>
+
+      <button class="menu-btn" aria-label="باز کردن منو" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+
+    <div class="hero-content container">
+      <div class="hero-title">
+        <h1>خانه‌ای که دنبالش هستی</h1>
+        <h2>در رامسر منتظر است</h2>
+        <p>خرید، فروش، رهن و اجاره ویلا، خانه و زمین در بهترین مناطق رامسر</p>
+      </div>
+
+      <section class="search-box" aria-label="جستجوی ملک">
+        <div class="search-tabs">
+          <button class="tab active" data-type="buy">خرید</button>
+          <button class="tab" data-type="sell">فروش</button>
+          <button class="tab" data-type="rent">رهن</button>
+          <button class="tab" data-type="lease">اجاره</button>
+        </div>
+        <div class="search-row">
+          <button class="search-submit" id="searchSubmit"><span>جستجو</span><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+          <label class="select-field"><small>متراژ</small><span>همه متراژها</span><b>⌄</b><select><option>همه متراژها</option><option>زیر ۱۰۰ متر</option><option>۱۰۰ تا ۲۰۰ متر</option><option>بالای ۲۰۰ متر</option></select></label>
+          <label class="select-field"><small>قیمت</small><span>همه قیمت‌ها</span><b>⌄</b><select><option>همه قیمت‌ها</option><option>زیر ۵ میلیارد</option><option>۵ تا ۱۰ میلیارد</option><option>بالای ۱۰ میلیارد</option></select></label>
+          <label class="select-field"><small>محدوده</small><span>همه مناطق</span><b>⌄</b><select><option>همه مناطق</option><option>جواهرده</option><option>کتالم و سادات‌شهر</option><option>صفارود</option><option>رامسر</option></select></label>
+          <label class="select-field"><small>نوع ملک</small><span>همه</span><b>⌄</b><select><option>همه</option><option>ویلا</option><option>آپارتمان</option><option>زمین</option><option>باغ</option><option>ملک تجاری</option></select></label>
+        </div>
+        <button class="advanced" id="advancedBtn">جستجوی پیشرفته <span>⌄</span></button>
+      </section>
+    </div>
+
+    <div class="category-strip container">
+      <a href="#properties"><span class="cat-icon">▥</span><b>یک پروژه ساختمانی</b></a>
+      <a href="#properties"><span class="cat-icon">▤</span><b>ملک تجاری</b></a>
+      <a href="#properties"><span class="cat-icon">⌖</span><b>زمین</b></a>
+      <a href="#properties"><span class="cat-icon">♧</span><b>باغ</b></a>
+      <a href="#properties"><span class="cat-icon">⌂</span><b>ویلا</b></a>
+      <a href="#properties"><span class="cat-icon">▥</span><b>خانه و آپارتمان</b></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container" id="properties">
+      <div class="section-head"><div><h2>املاک ویژه</h2><p>بهترین پیشنهادها برای شما</p></div><a href="#all-properties">مشاهده همه <span>←</span></a></div>
+      <div class="property-grid">
+        <article class="property-card"><div class="property-image img-1"><span class="badge">ویژه</span><button class="heart">♡</button></div><div class="property-body"><h3>ویلای مدرن استخردار در جواهرده</h3><p>جواهرده، رامسر</p><div class="meta"><span>۴۴۰ متر</span><span>۴ خواب</span></div><strong>۱۸,۵۰۰,۰۰۰,۰۰۰ تومان</strong></div></article>
+        <article class="property-card"><div class="property-image img-2"><span class="badge">ویژه</span><button class="heart">♡</button></div><div class="property-body"><h3>ویلای دوبلکس جنگلی در کتالم</h3><p>کتالم، رامسر</p><div class="meta"><span>۳۲۰ متر</span><span>۳ خواب</span></div><strong>۱۲,۸۰۰,۰۰۰,۰۰۰ تومان</strong></div></article>
+        <article class="property-card"><div class="property-image img-3"><span class="badge">جدید</span><button class="heart">♡</button></div><div class="property-body"><h3>باغ ۲۰۰۰ متری در صفارود</h3><p>صفارود، رامسر</p><div class="meta"><span>۲۰۰۰ متر</span><span>۱ باغ</span></div><strong>۶,۳۰۰,۰۰۰,۰۰۰ تومان</strong></div></article>
+        <article class="property-card"><div class="property-image img-4"><span class="badge">ویژه</span><button class="heart">♡</button></div><div class="property-body"><h3>زمین با دید دریا در تنکابن</h3><p>تنکابن، رامسر</p><div class="meta"><span>۶۲۰ متر</span><span>زمین</span></div><strong>۴,۶۰۰,۰۰۰,۰۰۰ تومان</strong></div></article>
+      </div>
+    </section>
+
+    <section class="section areas-section" id="areas">
+      <div class="container">
+        <div class="section-head"><div><h2>مناطق محبوب رامسر</h2><p>بهترین مناطق برای زندگی و سرمایه‌گذاری</p></div><a href="#all-areas">مشاهده همه <span>←</span></a></div>
+        <div class="area-grid">
+          <a class="area-card area-1" href="#area"><div><h3>جواهرده</h3><span>۱۲۵ ملک</span></div></a>
+          <a class="area-card area-2" href="#area"><div><h3>کتالم و سادات شهر</h3><span>۹۸ ملک</span></div></a>
+          <a class="area-card area-3" href="#area"><div><h3>صفارود</h3><span>۷۶ ملک</span></div></a>
+          <a class="area-card area-4" href="#area"><div><h3>محمودآباد</h3><span>۶۴ ملک</span></div></a>
+          <a class="area-card area-5" href="#area"><div><h3>رامسر</h3><span>۱۵۰ ملک</span></div></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="consultants">
+      <div class="section-head"><div><h2>مشاوران برتر</h2><p>با باتجربه‌ترین مشاوران املاک رامسر</p></div><a href="#all-consultants">مشاهده همه <span>←</span></a></div>
+      <div class="consultant-grid">
+        <article class="consultant-card"><div class="avatar avatar-1"></div><div class="consultant-info"><h3>امین قربانی</h3><p>مشاور املاک</p><span>۴.۷ <b>★</b> (۸۶ نظر)</span></div><a href="tel:01117345678">تماس <span>⌕</span></a></article>
+        <article class="consultant-card"><div class="avatar avatar-2"></div><div class="consultant-info"><h3>مهدی حسینی</h3><p>مشاور املاک</p><span>۴.۹ <b>★</b> (۱۱۲ نظر)</span></div><a href="tel:09121734567">تماس <span>⌕</span></a></article>
+        <article class="consultant-card"><div class="avatar avatar-3"></div><div class="consultant-info"><h3>سروش محمدی</h3><p>مشاور املاک</p><span>۴.۸ <b>★</b> (۹۴ نظر)</span></div><a href="tel:09121734567">تماس <span>⌕</span></a></article>
+        <article class="consultant-card"><div class="avatar avatar-4"></div><div class="consultant-info"><h3>علی رضایی</h3><p>مشاور املاک</p><span>۴.۹ <b>★</b> (۱۲۴ نظر)</span></div><a href="tel:09121734567">تماس <span>⌕</span></a></article>
+      </div>
+    </section>
+
+    <section class="cta container" id="sell">
+      <div class="cta-copy"><div class="cta-logo">⌂</div><div><h2>ملک خود را سریع و رایگان ثبت کنید</h2><p>در کمترین زمان، ملک خود را به هزاران خریدار و مستأجر معرفی کنید</p></div></div>
+      <a class="cta-btn" href="#register-property">ثبت ملک <b>+</b></a>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-main container">
+      <div class="footer-about" id="about"><h3>درباره ملکینو</h3><p>ملکینو پلتفرم هوشمند خرید، فروش، رهن و اجاره املاک در رامسر است. هدف ما ارائه بهترین تجربه برای یافتن خانه و ویلای شماست.</p><div class="socials"><a href="#instagram">◎</a><a href="#telegram">➤</a><a href="#whatsapp">◌</a><a href="#linkedin">in</a></div></div>
+      <div><h3>دسترسی سریع</h3><a href="#properties">املاک</a><a href="#areas">مناطق</a><a href="#consultants">مشاوران</a><a href="#articles">مقالات</a><a href="#contact">تماس با ما</a></div>
+      <div><h3>خدمات</h3><a href="#sell">ثبت ملک</a><a href="#guide-buy">راهنمای خرید</a><a href="#guide-sell">راهنمای فروش</a><a href="#faq">سوالات متداول</a><a href="#terms">شرایط و قوانین</a></div>
+      <div><h3>اطلاعات تماس</h3><p>۰۱۱-۱۷۳۴۵۶۷۸ <span>☎</span></p><p>۰۹۱۲-۱۷۳-۴۵۶۷ <span>▣</span></p><p>info@melkino.ir <span>✉</span></p><p>رامسر، بلوار معلم، پلاک ... <span>⌖</span></p></div>
+    </div>
+    <div class="footer-bottom"><span>© ملکینو. تمامی حقوق محفوظ است.</span><button id="toTop" aria-label="بازگشت به بالا">⌃</button></div>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
