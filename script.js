@@ -182,6 +182,28 @@ style.textContent=`
     filter:drop-shadow(0 5px 7px rgba(67,185,83,.22));
   }
 
+  /* تصاویر املاک ویژه */
+  .property-image{
+    background-size:cover !important;
+    background-position:center !important;
+    overflow:hidden;
+  }
+  .property-image.img-1{background-image:url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=85') !important;}
+  .property-image.img-2{background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85') !important;}
+  .property-image.img-3{background-image:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=85') !important;}
+  .property-image.img-4{background-image:url('https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=85') !important;}
+  .property-card:hover .property-image{
+    background-size:106% !important;
+    transition:background-size .45s ease;
+  }
+  .property-image:after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.03),transparent 58%,rgba(0,0,0,.18));
+    pointer-events:none;
+  }
+
   @media(max-width:820px){
     .search-row{gap:7px}
     .select-field,
