@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) exit;
 require_once get_template_directory() . '/stage-two.php';
 require_once get_template_directory() . '/stage-three.php';
 require_once get_template_directory() . '/stage-four.php';
+require_once get_template_directory() . '/stage-five.php';
 
 function melkino_vila_setup() {
     add_theme_support('title-tag');
