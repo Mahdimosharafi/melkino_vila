@@ -16,7 +16,10 @@ add_action('init','melkino_register_stage_two_content');
 
 function melkino_stage_two_assets(){
     $v=wp_get_theme()->get('Version');
-    if(is_post_type_archive('agent')||is_singular('agent')||is_post_type_archive('melkino_area')||is_singular('melkino_area')) wp_enqueue_style('melkino-stage-two',get_template_directory_uri().'/stage-two.css',array('melkino-style'),$v);
+    if(is_post_type_archive('agent')||is_singular('agent')||is_post_type_archive('melkino_area')||is_singular('melkino_area')) {
+        wp_enqueue_style('melkino-stage-two-header',get_template_directory_uri().'/stage-two-header.css',array(),$v);
+        wp_enqueue_style('melkino-stage-two',get_template_directory_uri().'/stage-two.css',array('melkino-stage-two-header'),$v);
+    }
 }
 add_action('wp_enqueue_scripts','melkino_stage_two_assets',20);
 
