@@ -1,13 +1,23 @@
 <?php
 /**
  * Front Page Template: Melkino Vila
- *
- * WordPress uses this file for the site homepage. The actual homepage HTML,
- * CSS and JavaScript are rendered through the shared WordPress-safe renderer
- * in index.php so the stylesheet cannot be lost when WordPress changes URLs.
+ * Renders the homepage and converts property navigation anchors into the
+ * real WordPress property archive URL.
  */
 if (!defined('ABSPATH')) {
     exit;
 }
 
+ob_start();
 require get_template_directory() . '/index.php';
+$homepage = ob_get_clean();
+
+$properties_url = get_post_type_archive_link('property');
+if (!$properties_url) {
+    $properties_url = home_url('/properties/');
+}
+
+$homepage = str_replace('href="#properties"', 'href="' . esc_url($properties_url) . '"', $homepage);
+$homepage = str_replace('href="#all-properties"', 'href="' . esc_url($properties_url) . '"', $homepage);
+
+echo $homepage;
