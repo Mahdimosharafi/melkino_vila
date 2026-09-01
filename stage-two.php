@@ -14,6 +14,12 @@ function melkino_register_stage_two_content() {
 }
 add_action('init','melkino_register_stage_two_content');
 
+function melkino_stage_two_assets(){
+    $v=wp_get_theme()->get('Version');
+    if(is_post_type_archive('agent')||is_singular('agent')||is_post_type_archive('melkino_area')||is_singular('melkino_area')) wp_enqueue_style('melkino-stage-two',get_template_directory_uri().'/stage-two.css',array('melkino-style'),$v);
+}
+add_action('wp_enqueue_scripts','melkino_stage_two_assets',20);
+
 function melkino_agent_meta_boxes(){add_meta_box('melkino_agent_details','اطلاعات مشاور','melkino_agent_details_box','agent','normal','high');}
 add_action('add_meta_boxes','melkino_agent_meta_boxes');
 function melkino_agent_details_box($post){
@@ -46,6 +52,5 @@ function melkino_save_area_meta($post_id){
 }
 add_action('save_post_melkino_area','melkino_save_area_meta');
 
-function melkino_stage_two_meta($id,$key,$default=''){$v=get_post_meta($id,'_melkino_'.$key,true);return $v!==''?$v:$default;}
-function melkino_agent_meta($id,$key,$default=''){$v=get_post_meta($id,'_melkino_agent_'.$key,true);return $v!==''?$v:$default;}
-function melkino_area_meta($id,$key,$default=''){$v=get_post_meta($id,'_melkino_area_'.$key,true);return $v!==''?$v:$default;}
+function melkino_agent_meta($id,$key,$default=''){ $v=get_post_meta($id,'_melkino_agent_'.$key,true);return $v!==''?$v:$default; }
+function melkino_area_meta($id,$key,$default=''){ $v=get_post_meta($id,'_melkino_area_'.$key,true);return $v!==''?$v:$default; }
