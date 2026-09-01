@@ -11,6 +11,7 @@ $areas_url = get_post_type_archive_link('melkino_area') ?: home_url('/areas/');
 $agents_url = get_post_type_archive_link('agent') ?: home_url('/agents/');
 $articles_url = get_post_type_archive_link('melkino_article') ?: home_url('/articles/');
 $notices_url = get_post_type_archive_link('melkino_notice') ?: home_url('/notices/');
+$submit_property_url = home_url('/submit-property/');
 
 $homepage = str_replace('href="#properties"', 'href="' . esc_url($properties_url) . '"', $homepage);
 $homepage = str_replace('href="#all-properties"', 'href="' . esc_url($properties_url) . '"', $homepage);
@@ -25,5 +26,10 @@ $homepage = str_replace('href="/areas/"', 'href="' . esc_url($areas_url) . '"', 
 $homepage = str_replace('href="/agents/"', 'href="' . esc_url($agents_url) . '"', $homepage);
 $homepage = str_replace('href="/articles/"', 'href="' . esc_url($articles_url) . '"', $homepage);
 $homepage = str_replace('href="/notices/"', 'href="' . esc_url($notices_url) . '"', $homepage);
+$homepage = str_replace('href="#sell"', 'href="' . esc_url($submit_property_url) . '"', $homepage);
+$homepage = str_replace('href="/submit-property/"', 'href="' . esc_url($submit_property_url) . '"', $homepage);
+
+// Make any remaining submit-property style links point to the real submission page.
+$homepage = preg_replace('/href=["\']#(?:submit-property|submit)["\']/i', 'href="' . esc_url($submit_property_url) . '"', $homepage);
 
 echo $homepage;
