@@ -194,6 +194,143 @@ style.textContent=`
     pointer-events:none;
   }
 
+  /* هاور کارت‌های مشاوران */
+  .consultant-card{
+    position:relative;
+    overflow:hidden;
+    transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease,background .28s ease;
+  }
+  .consultant-card:before{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    left:0;
+    height:3px;
+    background:linear-gradient(90deg,#43b953,#75dc82);
+    transform:scaleX(0);
+    transform-origin:center;
+    transition:transform .3s ease;
+  }
+  .consultant-card:hover{
+    transform:translateY(-7px);
+    border-color:rgba(88,199,103,.38);
+    box-shadow:0 16px 34px rgba(37,79,45,.13);
+  }
+  .consultant-card:hover:before{transform:scaleX(1)}
+  .consultant-card .avatar{
+    transition:transform .3s ease,box-shadow .3s ease;
+  }
+  .consultant-card:hover .avatar{
+    transform:scale(1.06);
+    box-shadow:0 0 0 4px rgba(99,206,112,.14);
+  }
+  .consultant-info h3{transition:color .22s ease}
+  .consultant-card:hover .consultant-info h3{color:#43b953}
+  .consultant-card>a{
+    transition:color .22s ease,background .22s ease,border-color .22s ease,transform .22s ease,box-shadow .22s ease;
+  }
+  .consultant-card>a:hover,
+  .consultant-card>a:focus-visible{
+    background:#63ce70;
+    border-color:#63ce70;
+    color:#fff;
+    transform:translateY(-1px);
+    box-shadow:0 7px 18px rgba(99,206,112,.24);
+  }
+  .consultant-card>a:hover span,
+  .consultant-card>a:focus-visible span{color:#fff}
+
+  /* هاور لینک‌های فوتر */
+  .footer-main>div:not(.footer-about) a{
+    width:max-content;
+    position:relative;
+    transition:color .22s ease,transform .22s ease,padding-right .22s ease;
+  }
+  .footer-main>div:not(.footer-about) a:before{
+    content:'';
+    width:0;
+    height:2px;
+    background:#63ce70;
+    border-radius:2px;
+    position:absolute;
+    right:0;
+    bottom:-2px;
+    transition:width .25s ease;
+  }
+  .footer-main>div:not(.footer-about) a:hover,
+  .footer-main>div:not(.footer-about) a:focus-visible{
+    color:#63ce70;
+    padding-right:7px;
+  }
+  .footer-main>div:not(.footer-about) a:hover:before,
+  .footer-main>div:not(.footer-about) a:focus-visible:before{width:100%}
+
+  /* شبکه‌های اجتماعی */
+  .socials a{
+    position:relative;
+    overflow:hidden;
+    transition:transform .25s ease,background .25s ease,color .25s ease,box-shadow .25s ease;
+  }
+  .socials a:after{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    border:1px solid rgba(99,206,112,.55);
+    transform:scale(.65);
+    opacity:0;
+    transition:transform .25s ease,opacity .25s ease;
+  }
+  .socials a:hover,
+  .socials a:focus-visible{
+    background:#63ce70;
+    color:#fff;
+    transform:translateY(-4px) rotate(-3deg);
+    box-shadow:0 9px 22px rgba(99,206,112,.24);
+  }
+  .socials a:hover:after,
+  .socials a:focus-visible:after{transform:scale(1.12);opacity:1}
+
+  /* CTA ثبت ملک */
+  .cta-btn{
+    position:relative;
+    overflow:hidden;
+    transition:transform .25s ease,box-shadow .25s ease,background .25s ease;
+  }
+  .cta-btn:after{
+    content:'';
+    position:absolute;
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:rgba(255,255,255,.14);
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    transition:transform .4s ease;
+  }
+  .cta-btn:hover,
+  .cta-btn:focus-visible{
+    background:#69d577;
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(99,206,112,.25);
+  }
+  .cta-btn:hover:after,
+  .cta-btn:focus-visible:after{transform:translate(-50%,-50%) scale(1.8)}
+
+  /* دکمه بازگشت به بالا */
+  .footer-bottom button{
+    transition:background .22s ease,color .22s ease,transform .22s ease,box-shadow .22s ease;
+  }
+  .footer-bottom button:hover,
+  .footer-bottom button:focus-visible{
+    background:#63ce70;
+    color:#fff;
+    transform:translateY(-3px);
+    box-shadow:0 7px 18px rgba(99,206,112,.25);
+  }
+
   @media(max-width:820px){
     .search-row{gap:7px}
     .select-field,
