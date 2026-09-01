@@ -2,20 +2,27 @@
 /**
  * Melkino Vila - WordPress theme fallback template.
  *
- * The homepage HTML is kept in index.html for now, but its asset paths are
- * rewritten to the active theme directory so CSS/JS work correctly in WordPress.
+ * The homepage HTML is kept in index.html for now. Asset URLs are rewritten
+ * to the active WordPress theme directory so CSS and JavaScript always load.
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-$html = file_get_contents(get_template_directory() . '/index.html');
 $theme_uri = get_template_directory_uri();
+$html = file_get_contents(get_template_directory() . '/index.html');
+
+if ($html === false) {
+    wp_die('فایل صفحه اصلی ملکینو پیدا نشد.');
+}
 
 $html = str_replace(
     array('href="styles.css"', 'src="script.js"'),
-    array('href="' . esc_url($theme_uri . '/styles.css') . '"', 'src="' . esc_url($theme_uri . '/script.js') . '"'),
+    array(
+        'href="' . esc_url($theme_uri . '/styles.css') . '"',
+        'src="' . esc_url($theme_uri . '/script.js') . '"'
+    ),
     $html
 );
 
