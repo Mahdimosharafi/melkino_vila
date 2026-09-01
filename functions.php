@@ -1,6 +1,7 @@
 <?php
 /** Melkino Vila WordPress theme functions. */
 if (!defined('ABSPATH')) exit;
+require_once get_template_directory() . '/stage-two.php';
 
 function melkino_vila_setup() {
     add_theme_support('title-tag');
@@ -16,9 +17,7 @@ function melkino_vila_assets() {
     wp_enqueue_style('melkino-estedad','https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;600;700;800;900&display=swap',array(),null);
     wp_enqueue_style('melkino-style',get_stylesheet_uri(),array(),$version);
     wp_enqueue_script('melkino-script',get_template_directory_uri().'/script.js',array(),$version,true);
-    if (is_post_type_archive('property') || is_singular('property')) {
-        wp_enqueue_style('melkino-property',get_template_directory_uri().'/property.css',array('melkino-style'),$version);
-    }
+    if (is_post_type_archive('property') || is_singular('property')) wp_enqueue_style('melkino-property',get_template_directory_uri().'/property.css',array('melkino-style'),$version);
 }
 add_action('wp_enqueue_scripts','melkino_vila_assets');
 function melkino_vila_body_class($classes){$classes[]='melkino-vila';return $classes;}
@@ -51,7 +50,7 @@ function melkino_save_property_meta($post_id){
     update_post_meta($post_id,'_melkino_featured',isset($_POST['melkino_featured'])?'1':'0');
 }
 add_action('save_post_property','melkino_save_property_meta');
-function melkino_property_flush_rewrite(){melkino_register_property_content();flush_rewrite_rules();}
+function melkino_property_flush_rewrite(){melkino_register_property_content();melkino_register_stage_two_content();flush_rewrite_rules();}
 add_action('after_switch_theme','melkino_property_flush_rewrite');
 function melkino_property_meta($id,$key,$default=''){ $v=get_post_meta($id,'_melkino_'.$key,true);return $v!==''?$v:$default; }
 function melkino_price($value){if(!$value)return 'تماس بگیرید';return number_format_i18n((float)preg_replace('/[^0-9.]/','',$value)).' تومان';}
