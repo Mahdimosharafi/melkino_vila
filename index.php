@@ -25,8 +25,15 @@ $property_css = str_replace('__THEME_URI__', get_template_directory_uri(), $prop
 $html = preg_replace('/<link[^>]+href=[\"\']styles\.css[\"\'][^>]*>/i', '', $html);
 $html = preg_replace('/<script[^>]+src=[\"\']script\.js[\"\'][^>]*><\/script>/i', '', $html);
 
+/* Allow the hero background to be changed from Appearance > Customize. */
+$hero_background = get_theme_mod('melkino_hero_background', '');
+$hero_custom_css = '';
+if ($hero_background) {
+    $hero_custom_css = '<style id="melkino-hero-custom-css">.hero{background-image:linear-gradient(180deg,rgba(3,15,27,.50),rgba(4,18,25,.22) 45%,rgba(5,18,20,.64)),url("' . esc_url($hero_background) . '") !important;background-position:center;background-size:cover;}</style>';
+}
+
 /* Keep the Google Font from the HTML, but make its loading non-blocking. */
-$html = str_replace('</head>', '<style id="melkino-theme-css">' . $css . '</style><style id="melkino-property-images-css">' . $property_css . '</style><style id="melkino-stage-nine-css">' . $stage_nine_css . '</style></head>', $html);
+$html = str_replace('</head>', '<style id="melkino-theme-css">' . $css . '</style><style id="melkino-property-images-css">' . $property_css . '</style><style id="melkino-stage-nine-css">' . $stage_nine_css . '</style>' . $hero_custom_css . '</head>', $html);
 $html = str_replace('</body>', '<script id="melkino-theme-js">' . $js . '</script></body>', $html);
 
 echo $html;
