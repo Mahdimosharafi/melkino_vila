@@ -12,6 +12,28 @@ require_once get_template_directory() . '/stage-nine.php';
 
 function melkino_vila_setup(){add_theme_support('title-tag');add_theme_support('post-thumbnails');add_theme_support('html5',array('search-form','comment-form','comment-list','gallery','caption','style','script'));register_nav_menus(array('primary'=>'منوی اصلی'));} add_action('after_setup_theme','melkino_vila_setup');
 function melkino_vila_assets(){ $v=wp_get_theme()->get('Version'); wp_enqueue_style('melkino-vazirmatn','https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap',array(),null);wp_enqueue_style('melkino-estedad','https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;600;700;800;900&display=swap',array(),null);wp_enqueue_style('melkino-style',get_stylesheet_uri(),array(),$v);wp_enqueue_style('melkino-stage-nine',get_template_directory_uri().'/stage-nine.css',array('melkino-style'),$v);wp_enqueue_script('melkino-script',get_template_directory_uri().'/script.js',array(),$v,true);if(is_post_type_archive('property')||is_singular('property'))wp_enqueue_style('melkino-property',get_template_directory_uri().'/property.css',array('melkino-stage-nine'),$v);if(is_page('about')||is_page('contact'))wp_enqueue_style('melkino-stage-six',get_template_directory_uri().'/stage-six.css',array('melkino-stage-nine'),$v);if(is_page('login')||is_page('register')||is_page('account'))wp_enqueue_style('melkino-stage-seven',get_template_directory_uri().'/stage-seven.css',array('melkino-stage-nine'),$v);if(is_page(array('buying-guide','selling-guide','sitemap','terms')))wp_enqueue_style('melkino-footer-pages',get_template_directory_uri().'/footer-pages.css',array('melkino-stage-nine'),$v);} add_action('wp_enqueue_scripts','melkino_vila_assets');
+
+/** Theme Customizer settings. */
+function melkino_vila_customize_register($wp_customize){
+    $wp_customize->add_section('melkino_hero',array(
+        'title'=>'هیرو صفحه اصلی',
+        'description'=>'تصویر پس‌زمینه بخش هیرو در صفحه اصلی ملکینو را انتخاب کنید.',
+        'priority'=>30,
+    ));
+    $wp_customize->add_setting('melkino_hero_background',array(
+        'default'=>'',
+        'sanitize_callback'=>'esc_url_raw',
+        'transport'=>'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize,'melkino_hero_background',array(
+        'label'=>'تصویر پس‌زمینه هیرو',
+        'description'=>'یک تصویر باکیفیت از ویلا، طبیعت یا منظره رامسر آپلود یا انتخاب کنید.',
+        'section'=>'melkino_hero',
+        'settings'=>'melkino_hero_background',
+    )));
+}
+add_action('customize_register','melkino_vila_customize_register');
+
 function melkino_vila_body_class($c){$c[]='melkino-vila';return $c;} add_filter('body_class','melkino_vila_body_class');
 function melkino_register_property_content(){register_post_type('property',array('labels'=>array('name'=>'املاک','singular_name'=>'ملک','add_new'=>'افزودن ملک','add_new_item'=>'افزودن ملک جدید','edit_item'=>'ویرایش ملک','new_item'=>'ملک جدید','view_item'=>'مشاهده ملک','search_items'=>'جستجوی املاک','not_found'=>'ملکی پیدا نشد','menu_name'=>'املاک'),'public'=>true,'show_in_rest'=>true,'menu_icon'=>'dashicons-building','has_archive'=>true,'rewrite'=>array('slug'=>'properties'),'supports'=>array('title','editor','thumbnail','excerpt')));register_taxonomy('property_type','property',array('labels'=>array('name'=>'نوع ملک','singular_name'=>'نوع ملک'),'public'=>true,'show_in_rest'=>true,'hierarchical'=>true,'rewrite'=>array('slug'=>'property-type')));register_taxonomy('property_area','property',array('labels'=>array('name'=>'مناطق','singular_name'=>'منطقه'),'public'=>true,'show_in_rest'=>true,'hierarchical'=>true,'rewrite'=>array('slug'=>'area')));register_taxonomy('property_deal','property',array('labels'=>array('name'=>'نوع معامله','singular_name'=>'نوع معامله'),'public'=>true,'show_in_rest'=>true,'hierarchical'=>false,'rewrite'=>array('slug'=>'deal')));} add_action('init','melkino_register_property_content');
 function melkino_property_meta_boxes(){add_meta_box('melkino_property_details','جزئیات ملک','melkino_property_details_box','property','normal','high');} add_action('add_meta_boxes','melkino_property_meta_boxes');
