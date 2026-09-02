@@ -12,11 +12,13 @@ $html_file = get_template_directory() . '/index.html';
 $css_file  = get_template_directory() . '/styles.css';
 $js_file   = get_template_directory() . '/script.js';
 $property_css_file = get_template_directory() . '/property-images.css';
+$stage_nine_css_file = get_template_directory() . '/stage-nine.css';
 
 $html = file_exists($html_file) ? file_get_contents($html_file) : '';
 $css  = file_exists($css_file) ? file_get_contents($css_file) : '';
 $js   = file_exists($js_file) ? file_get_contents($js_file) : '';
 $property_css = file_exists($property_css_file) ? file_get_contents($property_css_file) : '';
+$stage_nine_css = file_exists($stage_nine_css_file) ? file_get_contents($stage_nine_css_file) : '';
 $property_css = str_replace('__THEME_URI__', get_template_directory_uri(), $property_css);
 
 /* Remove the standalone asset tags because we inject the files below. */
@@ -24,7 +26,7 @@ $html = preg_replace('/<link[^>]+href=[\"\']styles\.css[\"\'][^>]*>/i', '', $htm
 $html = preg_replace('/<script[^>]+src=[\"\']script\.js[\"\'][^>]*><\/script>/i', '', $html);
 
 /* Keep the Google Font from the HTML, but make its loading non-blocking. */
-$html = str_replace('</head>', '<style id="melkino-theme-css">' . $css . '</style><style id="melkino-property-images-css">' . $property_css . '</style></head>', $html);
+$html = str_replace('</head>', '<style id="melkino-theme-css">' . $css . '</style><style id="melkino-property-images-css">' . $property_css . '</style><style id="melkino-stage-nine-css">' . $stage_nine_css . '</style></head>', $html);
 $html = str_replace('</body>', '<script id="melkino-theme-js">' . $js . '</script></body>', $html);
 
 echo $html;
