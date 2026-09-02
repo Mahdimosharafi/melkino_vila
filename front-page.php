@@ -18,12 +18,14 @@ $buying_page = get_page_by_path('buying-guide');
 $selling_page = get_page_by_path('selling-guide');
 $sitemap_page = get_page_by_path('sitemap');
 $terms_page = get_page_by_path('terms');
+$faq_page = get_page_by_path('faq');
 $about_url = $about_page ? get_permalink($about_page) : home_url('/about/');
 $contact_url = $contact_page ? get_permalink($contact_page) : home_url('/contact/');
 $buying_url = $buying_page ? get_permalink($buying_page) : home_url('/buying-guide/');
 $selling_url = $selling_page ? get_permalink($selling_page) : home_url('/selling-guide/');
 $sitemap_url = $sitemap_page ? get_permalink($sitemap_page) : home_url('/sitemap/');
 $terms_url = $terms_page ? get_permalink($terms_page) : home_url('/terms/');
+$faq_url = $faq_page ? get_permalink($faq_page) : home_url('/faq/');
 
 $homepage = str_replace('href="#properties"', 'href="' . esc_url($properties_url) . '"', $homepage);
 $homepage = str_replace('href="#all-properties"', 'href="' . esc_url($properties_url) . '"', $homepage);
@@ -47,10 +49,12 @@ $homepage = str_replace('href="#guide-buy"', 'href="' . esc_url($buying_url) . '
 $homepage = str_replace('href="#guide-sell"', 'href="' . esc_url($selling_url) . '"', $homepage);
 $homepage = str_replace('href="#sitemap"', 'href="' . esc_url($sitemap_url) . '"', $homepage);
 $homepage = str_replace('href="#terms"', 'href="' . esc_url($terms_url) . '"', $homepage);
+$homepage = str_replace('href="#faq"', 'href="' . esc_url($faq_url) . '"', $homepage);
 $homepage = str_replace('href="/buying-guide/"', 'href="' . esc_url($buying_url) . '"', $homepage);
 $homepage = str_replace('href="/selling-guide/"', 'href="' . esc_url($selling_url) . '"', $homepage);
 $homepage = str_replace('href="/sitemap/"', 'href="' . esc_url($sitemap_url) . '"', $homepage);
 $homepage = str_replace('href="/terms/"', 'href="' . esc_url($terms_url) . '"', $homepage);
+$homepage = str_replace('href="/faq/"', 'href="' . esc_url($faq_url) . '"', $homepage);
 if(is_user_logged_in()) $homepage = str_replace('ورود / ثبت‌نام','حساب کاربری',$homepage);
 $homepage = preg_replace('/href=["\']#(?:submit-property|submit)["\']/i', 'href="' . esc_url($submit_property_url) . '"', $homepage);
 echo $homepage;
