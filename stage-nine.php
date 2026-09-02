@@ -1,5 +1,5 @@
 <?php
-/** Stage 9 extra footer pages: buying guide, selling guide, sitemap, terms. */
+/** Stage 9 extra footer pages: buying guide, selling guide, sitemap, terms, FAQ. */
 if (!defined('ABSPATH')) exit;
 
 function melkino_stage_nine_page($slug,$title){
@@ -22,8 +22,9 @@ function melkino_stage_nine_ensure_pages(){
     melkino_stage_nine_page('selling-guide','راهنمای فروش');
     melkino_stage_nine_page('sitemap','سایت مپ');
     melkino_stage_nine_page('terms','شرایط و قوانین');
-    if(get_option('melkino_stage_nine_pages_version')!=='1'){
-        update_option('melkino_stage_nine_pages_version','1',false);
+    melkino_stage_nine_page('faq','سوالات متداول');
+    if(get_option('melkino_stage_nine_pages_version')!=='2'){
+        update_option('melkino_stage_nine_pages_version','2',false);
         flush_rewrite_rules(false);
     }
 }
@@ -34,7 +35,8 @@ function melkino_stage_nine_template_include($template){
         'buying-guide'=>'page-buying-guide.php',
         'selling-guide'=>'page-selling-guide.php',
         'sitemap'=>'page-sitemap.php',
-        'terms'=>'page-terms.php'
+        'terms'=>'page-terms.php',
+        'faq'=>'page-faq.php'
     );
     foreach($map as $slug=>$file){
         if(is_page($slug)){
