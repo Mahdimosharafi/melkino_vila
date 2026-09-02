@@ -37,7 +37,9 @@ if ($featured_query->have_posts()) {
 
         $featured_html .= '<article class="property-card">';
         $featured_html .= '<a class="property-image dynamic-property-image" href="' . esc_url(get_permalink($id)) . '"' . $image_style . ' aria-label="' . esc_attr(get_the_title()) . '">';
-        $featured_html .= '<span class="badge">ویژه</span><button class="heart" type="button" aria-label="افزودن به علاقه‌مندی‌ها">♡</button></a>';
+        $featured_html .= '<span class="badge">ویژه</span><span class="heart" role="button" tabindex="0" aria-label="افزودن به علاقه‌مندی‌ها" title="افزودن به علاقه‌مندی‌ها">';
+        $featured_html .= '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/></svg>';
+        $featured_html .= '</span></a>';
         $featured_html .= '<div class="property-body">';
         $featured_html .= '<h3><a href="' . esc_url(get_permalink($id)) . '">' . esc_html(get_the_title()) . '</a></h3>';
         $featured_html .= '<p>' . esc_html($address) . '</p>';
