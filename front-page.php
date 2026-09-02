@@ -4,6 +4,57 @@ if (!defined('ABSPATH')) exit;
 ob_start();
 require get_template_directory() . '/index.php';
 $homepage = ob_get_clean();
+
+/* Replace the static featured-property cards with published properties marked as «ملک ویژه» in the WordPress dashboard. */
+$featured_query = new WP_Query(array(
+    'post_type'      => 'property',
+    'post_status'    => 'publish',
+    'posts_per_page' => 4,
+    'meta_query'     => array(array(
+        'key'     => '_melkino_featured',
+        'value'   => '1',
+        'compare' => '=',
+    )),
+    'no_found_rows'  => true,
+));
+
+if ($featured_query->have_posts()) {
+    $featured_html = '';
+    while ($featured_query->have_posts()) {
+        $featured_query->the_post();
+        $id = get_the_ID();
+        $image = get_the_post_thumbnail_url($id, 'large');
+        $image_style = $image ? ' style="background-image:url(\'' . esc_url($image) . '\')"' : '';
+        $price_value = get_post_meta($id, '_melkino_price', true);
+        $price = $price_value !== '' ? number_format_i18n((float) preg_replace('/[^0-9.]/', '', $price_value)) . ' تومان' : 'تماس بگیرید';
+        $size = get_post_meta($id, '_melkino_area_size', true);
+        $beds = get_post_meta($id, '_melkino_bedrooms', true);
+        $address = get_post_meta($id, '_melkino_address', true) ?: 'رامسر';
+        $area_terms = wp_get_post_terms($id, 'property_area', array('fields' => 'names'));
+        if (!is_wp_error($area_terms) && !empty($area_terms)) {
+            $address = $area_terms[0] . '، رامسر';
+        }
+
+        $featured_html .= '<article class="property-card">';
+        $featured_html .= '<a class="property-image dynamic-property-image" href="' . esc_url(get_permalink($id)) . '"' . $image_style . ' aria-label="' . esc_attr(get_the_title()) . '">';
+        $featured_html .= '<span class="badge">ویژه</span><button class="heart" type="button" aria-label="افزودن به علاقه‌مندی‌ها">♡</button></a>';
+        $featured_html .= '<div class="property-body">';
+        $featured_html .= '<h3><a href="' . esc_url(get_permalink($id)) . '">' . esc_html(get_the_title()) . '</a></h3>';
+        $featured_html .= '<p>' . esc_html($address) . '</p>';
+        $featured_html .= '<div class="meta"><span>' . esc_html($size ?: '—') . ' متر</span><span>' . esc_html($beds ?: '—') . ' خواب</span></div>';
+        $featured_html .= '<strong>' . esc_html($price) . '</strong>';
+        $featured_html .= '</div></article>';
+    }
+    wp_reset_postdata();
+
+    $homepage = preg_replace(
+        '/<div class="property-grid">.*?<\/div>\s*<\/section>/s',
+        '<div class="property-grid">' . $featured_html . '</div></section>',
+        $homepage,
+        1
+    );
+}
+
 $properties_url = get_post_type_archive_link('property') ?: home_url('/properties/');
 $areas_url = get_post_type_archive_link('melkino_area') ?: home_url('/areas/');
 $agents_url = get_post_type_archive_link('agent') ?: home_url('/agents/');
