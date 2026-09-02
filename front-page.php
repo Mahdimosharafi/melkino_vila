@@ -12,6 +12,10 @@ $agents_url = get_post_type_archive_link('agent') ?: home_url('/agents/');
 $articles_url = get_post_type_archive_link('melkino_article') ?: home_url('/articles/');
 $notices_url = get_post_type_archive_link('melkino_notice') ?: home_url('/notices/');
 $submit_property_url = home_url('/submit-property/');
+$about_page = get_page_by_path('about');
+$contact_page = get_page_by_path('contact');
+$about_url = $about_page ? get_permalink($about_page) : home_url('/about/');
+$contact_url = $contact_page ? get_permalink($contact_page) : home_url('/contact/');
 
 $homepage = str_replace('href="#properties"', 'href="' . esc_url($properties_url) . '"', $homepage);
 $homepage = str_replace('href="#all-properties"', 'href="' . esc_url($properties_url) . '"', $homepage);
@@ -28,6 +32,8 @@ $homepage = str_replace('href="/articles/"', 'href="' . esc_url($articles_url) .
 $homepage = str_replace('href="/notices/"', 'href="' . esc_url($notices_url) . '"', $homepage);
 $homepage = str_replace('href="#sell"', 'href="' . esc_url($submit_property_url) . '"', $homepage);
 $homepage = str_replace('href="/submit-property/"', 'href="' . esc_url($submit_property_url) . '"', $homepage);
+$homepage = str_replace('href="#about"', 'href="' . esc_url($about_url) . '"', $homepage);
+$homepage = str_replace('href="#contact"', 'href="' . esc_url($contact_url) . '"', $homepage);
 
 // Make any remaining submit-property style links point to the real submission page.
 $homepage = preg_replace('/href=["\']#(?:submit-property|submit)["\']/i', 'href="' . esc_url($submit_property_url) . '"', $homepage);
