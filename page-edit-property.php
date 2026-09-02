@@ -1,0 +1,10 @@
+<?php
+if (!defined('ABSPATH')) exit;
+if(!is_user_logged_in()){wp_safe_redirect(home_url('/login/'));exit;}
+$post_id=isset($_GET['property_id'])?absint($_GET['property_id']):0;
+$post=$post_id?get_post($post_id):null;
+if(!$post||$post->post_type!=='property'||(int)$post->post_author!==(int)get_current_user_id()){wp_safe_redirect(home_url('/account/'));exit;}
+get_header();
+?>
+<main class="melkino-account-page"><div class="melkino-account-container"><section class="account-content" style="max-width:820px;margin:0 auto"><div class="account-content-head"><h2>ویرایش آگهی</h2><a href="<?php echo esc_url(home_url('/account/')); ?>">← بازگشت به حساب</a></div><form class="auth-form" method="post"><?php wp_nonce_field('melkino_edit_property','melkino_edit_nonce'); ?><input type="hidden" name="melkino_edit_property" value="1"><input type="hidden" name="property_id" value="<?php echo esc_attr($post_id); ?>"><div class="auth-field"><label>عنوان ملک</label><input required type="text" name="property_title" value="<?php echo esc_attr($post->post_title); ?>"></div><div class="auth-field"><label>توضیحات</label><textarea name="property_description" rows="8" style="width:100%;box-sizing:border-box;border:1px solid #dfe7e1;border-radius:13px;padding:14px;font:inherit;resize:vertical"><?php echo esc_textarea($post->post_content); ?></textarea></div><div class="account-stats" style="margin:0"><div class="auth-field"><label>قیمت</label><input type="text" name="property_price" value="<?php echo esc_attr(melkino_property_meta($post_id,'price')); ?>"></div><div class="auth-field"><label>متراژ</label><input type="text" name="property_area_size" value="<?php echo esc_attr(melkino_property_meta($post_id,'area_size')); ?>"></div><div class="auth-field"><label>تعداد خواب</label><input type="text" name="property_bedrooms" value="<?php echo esc_attr(melkino_property_meta($post_id,'bedrooms')); ?>"></div></div><button class="auth-submit" type="submit">ذخیره تغییرات</button></form></section></div></main>
+<?php get_footer(); ?>
