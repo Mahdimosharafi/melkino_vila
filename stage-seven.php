@@ -1,108 +1,13 @@
 <?php
 /** Stage 7: custom authentication and user account system. */
 if (!defined('ABSPATH')) exit;
-
-function melkino_stage_seven_page($slug,$title){
-    $page=get_page_by_path($slug,OBJECT,'page');
-    if(!$page){
-        $id=wp_insert_post(array('post_title'=>$title,'post_name'=>$slug,'post_status'=>'publish','post_type'=>'page','post_content'=>''),true);
-        if(!is_wp_error($id)&&$id) $page=get_post($id);
-    }
-    return $page;
-}
-function melkino_stage_seven_setup(){
-    melkino_stage_seven_page('login','ورود به حساب کاربری');
-    melkino_stage_seven_page('register','ثبت نام در ملکینو');
-    melkino_stage_seven_page('account','حساب کاربری');
-    if(get_option('melkino_stage_seven_rewrite_version')!=='1'){
-        update_option('melkino_stage_seven_rewrite_version','1',false);
-        flush_rewrite_rules(false);
-    }
-}
-add_action('init','melkino_stage_seven_setup',40);
-
-function melkino_stage_seven_template($template){
-    if(is_page('login')){ $custom=get_template_directory().'/page-login.php'; if(file_exists($custom)) return $custom; }
-    if(is_page('register')){ $custom=get_template_directory().'/page-register.php'; if(file_exists($custom)) return $custom; }
-    if(is_page('account')){ $custom=get_template_directory().'/page-account.php'; if(file_exists($custom)) return $custom; }
-    return $template;
-}
-add_filter('template_include','melkino_stage_seven_template');
-
-function melkino_stage_seven_assets(){
-    if(is_page('login')||is_page('register')||is_page('account')){
-        wp_enqueue_style('melkino-stage-seven',get_template_directory_uri().'/stage-seven.css',array('melkino-style'),wp_get_theme()->get('Version'));
-    }
-}
-add_action('wp_enqueue_scripts','melkino_stage_seven_assets',30);
-
-function melkino_stage_seven_login_handler(){
-    if($_SERVER['REQUEST_METHOD']!=='POST'||empty($_POST['melkino_login_form'])) return;
-    if(!isset($_POST['melkino_login_nonce'])||!wp_verify_nonce($_POST['melkino_login_nonce'],'melkino_login_submit')) return;
-    $identifier=sanitize_text_field(wp_unslash(isset($_POST['login_identifier'])?$_POST['login_identifier']:''));
-    $password=(string)(isset($_POST['login_password'])?$_POST['login_password']:'');
-    $remember=!empty($_POST['login_remember']);
-    if($identifier===' '||$identifier==='') wp_safe_redirect(add_query_arg('login_error','empty',home_url('/login/')));
-    if($identifier===''||$password===''){ wp_safe_redirect(add_query_arg('login_error','empty',home_url('/login/'))); exit; }
-    $user=get_user_by('email',$identifier);
-    if(!$user) $user=get_user_by('login',$identifier);
-    if(!$user){
-        $users=get_users(array('meta_key'=>'_melkino_mobile','meta_value'=>$identifier,'number'=>1,'fields'=>'all'));
-        if(!empty($users)) $user=$users[0];
-    }
-    if(!$user){ wp_safe_redirect(add_query_arg('login_error','invalid',home_url('/login/'))); exit; }
-    $result=wp_signon(array('user_login'=>$user->user_login,'user_password'=>$password,'remember'=>$remember),is_ssl());
-    if(is_wp_error($result)){ wp_safe_redirect(add_query_arg('login_error','invalid',home_url('/login/'))); exit; }
-    wp_safe_redirect(home_url('/account/')); exit;
-}
-add_action('template_redirect','melkino_stage_seven_login_handler');
-
-function melkino_stage_seven_register_handler(){
-    if($_SERVER['REQUEST_METHOD']!=='POST'||empty($_POST['melkino_register_form'])) return;
-    if(!isset($_POST['melkino_register_nonce'])||!wp_verify_nonce($_POST['melkino_register_nonce'],'melkino_register_submit')) return;
-    $name=sanitize_text_field(wp_unslash(isset($_POST['register_name'])?$_POST['register_name']:''));
-    $mobile=sanitize_text_field(wp_unslash(isset($_POST['register_mobile'])?$_POST['register_mobile']:''));
-    $email=sanitize_email(wp_unslash(isset($_POST['register_email'])?$_POST['register_email']:''));
-    $password=(string)(isset($_POST['register_password'])?$_POST['register_password']:'');
-    $confirm=(string)(isset($_POST['register_password_confirm'])?$_POST['register_password_confirm']:'');
-    $agree=!empty($_POST['register_agree']);
-    if($name===''||$mobile===''||$password===''||$confirm===''||!$agree){ wp_safe_redirect(add_query_arg('register_error','required',home_url('/register/'))); exit; }
-    if(strlen($password)<8){ wp_safe_redirect(add_query_arg('register_error','weak',home_url('/register/'))); exit; }
-    if($password!==$confirm){ wp_safe_redirect(add_query_arg('register_error','match',home_url('/register/'))); exit; }
-    $mobile_exists=get_users(array('meta_key'=>'_melkino_mobile','meta_value'=>$mobile,'number'=>1,'fields'=>'ID'));
-    if(!empty($mobile_exists)){ wp_safe_redirect(add_query_arg('register_error','mobile',home_url('/register/'))); exit; }
-    if($email!==''&&email_exists($email)){ wp_safe_redirect(add_query_arg('register_error','email',home_url('/register/'))); exit; }
-    $base=sanitize_user($mobile,true);
-    if($base==='') $base='user';
-    $username=$base; $i=1;
-    while(username_exists($username)){ $username=$base.$i; $i++; }
-    $user_id=wp_create_user($username,$password,$email);
-    if(is_wp_error($user_id)){ wp_safe_redirect(add_query_arg('register_error','general',home_url('/register/'))); exit; }
-    wp_update_user(array('ID'=>$user_id,'display_name'=>$name,'nickname'=>$name));
-    update_user_meta($user_id,'_melkino_mobile',$mobile);
-    wp_set_auth_cookie($user_id,true,is_ssl());
-    wp_safe_redirect(home_url('/account/')); exit;
-}
-add_action('template_redirect','melkino_stage_seven_register_handler');
-
-function melkino_stage_seven_logout(){
-    if(isset($_GET['melkino_logout'])&&$_GET['melkino_logout']==='1'&&is_user_logged_in()){
-        if(!isset($_GET['_wpnonce'])||!wp_verify_nonce($_GET['_wpnonce'],'melkino_logout')) return;
-        wp_logout();
-        wp_safe_redirect(home_url('/')); exit;
-    }
-}
-add_action('template_redirect','melkino_stage_seven_logout',5);
-
-function melkino_user_property_query($user_id){
-    return new WP_Query(array('post_type'=>'property','post_status'=>array('publish','pending','draft','private','future'),'author'=>(int)$user_id,'posts_per_page'=>50,'orderby'=>'date','order'=>'DESC','no_found_rows'=>true));
-}
-
-function melkino_stage_seven_delete_property(){
-    if($_SERVER['REQUEST_METHOD']!=='POST'||empty($_POST['melkino_delete_property'])) return;
-    if(!is_user_logged_in()||!isset($_POST['melkino_delete_nonce'])||!wp_verify_nonce($_POST['melkino_delete_nonce'],'melkino_delete_property')) return;
-    $post_id=absint($_POST['property_id']); $post=get_post($post_id);
-    if(!$post||$post->post_type!=='property'||((int)$post->post_author!==(int)get_current_user_id()&&!current_user_can('delete_post',$post_id))) return;
-    wp_trash_post($post_id); wp_safe_redirect(add_query_arg('deleted','1',home_url('/account/'))); exit;
-}
-add_action('template_redirect','melkino_stage_seven_delete_property',6);
+function melkino_stage_seven_page($slug,$title){$page=get_page_by_path($slug,OBJECT,'page');if(!$page){$id=wp_insert_post(array('post_title'=>$title,'post_name'=>$slug,'post_status'=>'publish','post_type'=>'page','post_content'=>''),true);if(!is_wp_error($id)&&$id)$page=get_post($id);}return $page;}
+function melkino_stage_seven_setup(){melkino_stage_seven_page('login','ورود به حساب کاربری');melkino_stage_seven_page('register','ثبت نام در ملکینو');melkino_stage_seven_page('account','حساب کاربری');if(get_option('melkino_stage_seven_rewrite_version')!=='1'){update_option('melkino_stage_seven_rewrite_version','1',false);flush_rewrite_rules(false);}}add_action('init','melkino_stage_seven_setup',40);
+function melkino_stage_seven_template($template){if(is_page('login')){$custom=get_template_directory().'/page-login.php';if(file_exists($custom))return $custom;}if(is_page('register')){$custom=get_template_directory().'/page-register.php';if(file_exists($custom))return $custom;}if(is_page('account')){$custom=get_template_directory().'/page-account.php';if(file_exists($custom))return $custom;}return $template;}add_filter('template_include','melkino_stage_seven_template');
+function melkino_stage_seven_assets(){if(is_page('login')||is_page('register')||is_page('account'))wp_enqueue_style('melkino-stage-seven',get_template_directory_uri().'/stage-seven.css',array('melkino-style'),wp_get_theme()->get('Version'));}add_action('wp_enqueue_scripts','melkino_stage_seven_assets',30);
+function melkino_stage_seven_login_handler(){if($_SERVER['REQUEST_METHOD']!=='POST'||empty($_POST['melkino_login_form']))return;if(!isset($_POST['melkino_login_nonce'])||!wp_verify_nonce($_POST['melkino_login_nonce'],'melkino_login_submit'))return;$identifier=sanitize_text_field(wp_unslash(isset($_POST['login_identifier'])?$_POST['login_identifier']:''));$password=(string)(isset($_POST['login_password'])?$_POST['login_password']:'');$remember=!empty($_POST['login_remember']);if($identifier===''||$password===''){wp_safe_redirect(add_query_arg('login_error','empty',home_url('/login/')));exit;}$user=get_user_by('email',$identifier);if(!$user)$user=get_user_by('login',$identifier);if(!$user){$users=get_users(array('meta_key'=>'_melkino_mobile','meta_value'=>$identifier,'number'=>1,'fields'=>'all'));if(!empty($users))$user=$users[0];}if(!$user){wp_safe_redirect(add_query_arg('login_error','invalid',home_url('/login/')));exit;}$result=wp_signon(array('user_login'=>$user->user_login,'user_password'=>$password,'remember'=>$remember),is_ssl());if(is_wp_error($result)){wp_safe_redirect(add_query_arg('login_error','invalid',home_url('/login/')));exit;}wp_safe_redirect(home_url('/account/'));exit;}add_action('template_redirect','melkino_stage_seven_login_handler');
+function melkino_stage_seven_register_handler(){if($_SERVER['REQUEST_METHOD']!=='POST'||empty($_POST['melkino_register_form']))return;if(!isset($_POST['melkino_register_nonce'])||!wp_verify_nonce($_POST['melkino_register_nonce'],'melkino_register_submit'))return;$name=sanitize_text_field(wp_unslash(isset($_POST['register_name'])?$_POST['register_name']:''));$mobile=sanitize_text_field(wp_unslash(isset($_POST['register_mobile'])?$_POST['register_mobile']:''));$email=sanitize_email(wp_unslash(isset($_POST['register_email'])?$_POST['register_email']:''));$password=(string)(isset($_POST['register_password'])?$_POST['register_password']:'');$confirm=(string)(isset($_POST['register_password_confirm'])?$_POST['register_password_confirm']:'');$agree=!empty($_POST['register_agree']);if($name===''||$mobile===''||$password===''||$confirm===''||!$agree){wp_safe_redirect(add_query_arg('register_error','required',home_url('/register/')));exit;}if(strlen($password)<8){wp_safe_redirect(add_query_arg('register_error','weak',home_url('/register/')));exit;}if($password!==$confirm){wp_safe_redirect(add_query_arg('register_error','match',home_url('/register/')));exit;}$mobile_exists=get_users(array('meta_key'=>'_melkino_mobile','meta_value'=>$mobile,'number'=>1,'fields'=>'ID'));if(!empty($mobile_exists)){wp_safe_redirect(add_query_arg('register_error','mobile',home_url('/register/')));exit;}if($email!==''&&email_exists($email)){wp_safe_redirect(add_query_arg('register_error','email',home_url('/register/')));exit;}$base=sanitize_user($mobile,true);if($base==='')$base='user';$username=$base;$i=1;while(username_exists($username)){$username=$base.$i;$i++;}$user_id=wp_create_user($username,$password,$email);if(is_wp_error($user_id)){wp_safe_redirect(add_query_arg('register_error','general',home_url('/register/')));exit;}wp_update_user(array('ID'=>$user_id,'display_name'=>$name,'nickname'=>$name));update_user_meta($user_id,'_melkino_mobile',$mobile);wp_set_auth_cookie($user_id,true,is_ssl());wp_safe_redirect(home_url('/account/'));exit;}add_action('template_redirect','melkino_stage_seven_register_handler');
+function melkino_stage_seven_logout(){if(isset($_GET['melkino_logout'])&&$_GET['melkino_logout']==='1'&&is_user_logged_in()){if(!isset($_GET['_wpnonce'])||!wp_verify_nonce($_GET['_wpnonce'],'melkino_logout'))return;wp_logout();wp_safe_redirect(home_url('/'));exit;}}add_action('template_redirect','melkino_stage_seven_logout',5);
+function melkino_stage_seven_submission_guard(){if(is_page('submit-property')&&!is_user_logged_in()){wp_safe_redirect(add_query_arg('redirect_to',rawurlencode(home_url('/submit-property/')),home_url('/login/')));exit;}}add_action('template_redirect','melkino_stage_seven_submission_guard',1);
+function melkino_user_property_query($user_id){return new WP_Query(array('post_type'=>'property','post_status'=>array('publish','pending','draft','private','future'),'author'=>(int)$user_id,'posts_per_page'=>50,'orderby'=>'date','order'=>'DESC','no_found_rows'=>true));}
+function melkino_stage_seven_delete_property(){if($_SERVER['REQUEST_METHOD']!=='POST'||empty($_POST['melkino_delete_property']))return;if(!is_user_logged_in()||!isset($_POST['melkino_delete_nonce'])||!wp_verify_nonce($_POST['melkino_delete_nonce'],'melkino_delete_property'))return;$post_id=absint($_POST['property_id']);$post=get_post($post_id);if(!$post||$post->post_type!=='property'||((int)$post->post_author!==(int)get_current_user_id()&&!current_user_can('delete_post',$post_id)))return;wp_trash_post($post_id);wp_safe_redirect(add_query_arg('deleted','1',home_url('/account/')));exit;}add_action('template_redirect','melkino_stage_seven_delete_property',6);
